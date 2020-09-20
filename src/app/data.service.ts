@@ -51,13 +51,13 @@ export class DataService {
   }
 
   signIn(userdetail: any) {
-    console.log(userdetail)
+    
     return this.http.post(`${this.apiUrl}signIn`, userdetail)
     
     
   }
  updateMeals(mealDetails : any) {
-   console.log(mealDetails)
+  
    return this.http.post(`${this.apiUrl}updateUser`, mealDetails)
  }
 

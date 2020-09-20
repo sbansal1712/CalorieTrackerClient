@@ -34,7 +34,7 @@
     <input type="submit" value="Add" class="cta" />
   </form>
 
-  <form style="width:50%;" [formGroup]="submitForm" (ngSubmit)="savedata()">
+  <form style="width:70%;" [formGroup]="submitForm" (ngSubmit)="savedata()">
     
     
   <div class="row">
@@ -54,9 +54,10 @@
     <input type="submit" value="Save"  style="margin-top:2%;float: right;"class="cta" />
   </div>
   </form>
-  <button *ngIf="!editable"(click)="edit($event)" mat-flat-button><mat-icon>create</mat-icon></button>
-  <button *ngIf="editable" (click)="edit($event)"  mat-flat-button>Cancel</button>
- 
+  <div *ngIf="transactions.length != 0">
+  <button *ngIf="!editable"(click)="edit($event)" style="margin-left: 64%;" mat-flat-button>Edit</button>
+  <button *ngIf="editable" (click)="edit($event)" style="margin-left: 64%;" mat-flat-button>Cancel</button>
+</div>
   
 <table style="margin-top: 1%;" mat-table [dataSource]="dataSource" class="mat-elevation-z8">
   <!-- Item Column -->

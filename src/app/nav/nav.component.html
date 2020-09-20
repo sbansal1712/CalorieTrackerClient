@@ -4,7 +4,7 @@
     <nav>
       <ul>
         <li><a routerLink="/home">Home</a></li>
-        <li><a routerLink="/about">About</a></li>
+        <li><a routerLink="/addNewMeal">Add Your Meal</a></li>
         <li *ngIf="currentUser == undefined" ><a  routerLink="/register">SignIn/SignUp</a></li>
         
         <li *ngIf="currentUser != undefined"> <img   [matTooltip]="currentUser"  mat-icon-button [matMenuTriggerFor]="usermenu" src="assets/profile.png" class="user-profile"> </li>

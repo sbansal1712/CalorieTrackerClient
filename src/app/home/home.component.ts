@@ -20,12 +20,12 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     
 
-    console.log(this.dataService.currentUser)
+    
     if(this.dataService.currentUser != undefined){
       this.Meals = this.dataService.currentUser.Meals
      
       if(this.Meals == undefined) {
-        this.router.navigate(["/about"])
+        this.router.navigate(["/addNewMeal"])
         this.dataService.openSuccessSnackBar("Create your First Meal", "")
         
       }
@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit {
 
     }
     
-    console.log(this.Meals)
+   
 
     // this.data.getAllAds().subscribe((data) => {
     //   this.ads = data;
@@ -46,7 +46,7 @@ export class HomeComponent implements OnInit {
   goToMealData(i: any) {
 
   this.dataService.mealIndex = i;
-  console.log(this.dataService.mealIndex)
+  
    this.router.navigate(["existingmeal"])
   }
 

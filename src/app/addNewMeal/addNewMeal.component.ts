@@ -1,17 +1,17 @@
 import { Component, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../data.service';
 
 
 
 @Component({
-  selector: 'app-about',
-  templateUrl: './about.component.html',
-  styleUrls: ['./about.component.scss']
+  selector: 'app-addNewMeal',
+  templateUrl: './addNewMeal.component.html',
+  styleUrls: ['./addNewMeal.component.scss']
 })
-export class AboutComponent implements OnInit  {
+export class AddNewMealComponent implements OnInit  {
   datesubmitted: boolean;
   dateSubmitted: boolean;
   totalCalorie: any;
@@ -21,7 +21,7 @@ export class AboutComponent implements OnInit  {
 
 
   
-  constructor( private formBuilder: FormBuilder, private dataService : DataService, private router : Router){
+  constructor( private formBuilder: FormBuilder, private dataService : DataService, private router : Router, private activatedRoute : ActivatedRoute){
     
       this.currentUser = this.dataService.currentUser
       this.mealIndex = this.dataService.mealIndex
@@ -31,7 +31,7 @@ export class AboutComponent implements OnInit  {
   }
   mealForm: FormGroup;
   submitForm : FormGroup;
-  mealSubmitted: boolean;
+  mealSubmitted: boolean = false;
   editable = false;
   ngOnInit(){
     this.getTransactionData()
@@ -62,7 +62,7 @@ export class AboutComponent implements OnInit  {
   }
   delete(i){
     this.transactions.splice(i,1);
-    console.log(this.transactions)
+    
     this.dataSource = new MatTableDataSource<Element>(this.transactions);
     
   }
@@ -81,8 +81,8 @@ export class AboutComponent implements OnInit  {
         totalCalorie : this.totalCalorie,
         DailyMeals : this.transactions
       }
-      console.log(this.mealIndex)
-      console.log(newMeal)
+      
+    
       if(this.currentUser.Meals == undefined || this.currentUser.Meals.length == 0){
         this.currentUser.Meals = []
         this.currentUser.Meals.push(newMeal)
@@ -112,6 +112,7 @@ export class AboutComponent implements OnInit  {
     if (this.mealForm.invalid) {
       return;
     } else {
+      this.mealSubmitted = false;
       const mealdetail = {
         item: this.mealForm.get("MealName").value,
        
@@ -120,8 +121,11 @@ export class AboutComponent implements OnInit  {
         
       };
       this.transactions.push(mealdetail)
+      
+     
       this.mealForm.reset()
-      this.mealSubmitted = false;
+      
+    
       
       this.dataSource = new MatTableDataSource<Element>(this.transactions);
 
@@ -135,6 +139,10 @@ export class AboutComponent implements OnInit  {
     //this.registrationsuccess = true;
   }
   getTransactionData(){
+
+    if(this.activatedRoute.snapshot.url[0].path == "addNewMeal"){
+      this.mealIndex = undefined
+    }
     if(this.currentUser == undefined){
         this.dataService.getLoggedInName.next(undefined)
         sessionStorage.clear()

@@ -26,11 +26,12 @@ export class NavComponent implements OnInit {
   logout(){
     sessionStorage.clear()
     this.currentUser = undefined
+    this.dataService.getLoggedInName.next(undefined)
     this.dataService.currentUser = undefined
     this.router.navigate(['/register'])
   }
   ngOnInit() {
     this.currentUser = sessionStorage.getItem('username')
-    console.log(this.currentUser)
+    
   }
 }

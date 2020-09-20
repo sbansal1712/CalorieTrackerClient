@@ -23,7 +23,7 @@ export class RegisterComponent implements OnInit {
   loginsuccess: boolean;
   setdata(value:any){
     this.dataService.currentUser = value
-    console.log(this.dataService.currentUser)
+   
   }
 
   constructor(
@@ -101,7 +101,7 @@ export class RegisterComponent implements OnInit {
         
       };
       this.dataService.signIn(userdetail).subscribe((data: any) => {
-        console.log(this.loggedInUser)
+       
         this.loggedInUser = data
         if(this.loggedInUser.err != undefined){
           this.dataService.openErrorSnackBar('Invalid Credentials', '');
