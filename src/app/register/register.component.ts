@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { DataService } from "../data.service";
 import { Router } from "@angular/router";
+import { MatSnackBar, MatSnackBarModule } from '@angular/material';
 
 @Component({
   selector: "app-register",
@@ -28,7 +29,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private dataService: DataService,
-    private router: Router
+    private router: Router,
+    
   ) {}
 
   ngOnInit() {
@@ -66,9 +68,21 @@ export class RegisterComponent implements OnInit {
         
       };
       this.dataService.createNewUser(userdetail).subscribe((data: any) => {
+       
         //this.loggedInUser = data;
+        this.loggedInUser = data
+        if(this.loggedInUser.keyPattern == undefined){
+          this.setdata(this.loggedInUser);
+        this.dataService.getLoggedInName.next(this.loggedInUser.Username)
+
         
+        //sessionStorage.setItem("username", this.loggedInUser.Username) 
         this.router.navigate(["/home"]);
+        }
+        else{
+          this.dataService.openErrorSnackBar('Username already exists', '');
+        }
+        
       });
     }
     this.registrationsuccess = true;
@@ -87,12 +101,19 @@ export class RegisterComponent implements OnInit {
         
       };
       this.dataService.signIn(userdetail).subscribe((data: any) => {
+        console.log(this.loggedInUser)
         this.loggedInUser = data
-        this.setdata(this.loggedInUser);
-        this.dataService.getLoggedInName.next(this.loggedInUser.Username)
-        sessionStorage.setItem("username", this.loggedInUser.Username)
-        
-       this.router.navigate(["/home"])
+        if(this.loggedInUser.err != undefined){
+          this.dataService.openErrorSnackBar('Invalid Credentials', '');
+        }
+        else{
+          this.setdata(this.loggedInUser);
+          this.dataService.getLoggedInName.next(this.loggedInUser.Username)
+          sessionStorage.setItem("username", this.loggedInUser.Username)
+          
+         this.router.navigate(["/home"])
+        }
+       
       });
     }
     this.loginsuccess = true;

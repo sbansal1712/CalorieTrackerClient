@@ -16,12 +16,15 @@ export class AboutComponent implements OnInit  {
   dateSubmitted: boolean;
   totalCalorie: any;
   currentUser: any;
+  mealIndex: any;
+  fromDate: any = undefined;
 
 
   
   constructor( private formBuilder: FormBuilder, private dataService : DataService, private router : Router){
     
       this.currentUser = this.dataService.currentUser
+      this.mealIndex = this.dataService.mealIndex
       //return this.dataService.currentUser
   
     
@@ -29,7 +32,7 @@ export class AboutComponent implements OnInit  {
   mealForm: FormGroup;
   submitForm : FormGroup;
   mealSubmitted: boolean;
-
+  editable = false;
   ngOnInit(){
     this.getTransactionData()
     this.mealForm = this.formBuilder.group({
@@ -63,6 +66,10 @@ export class AboutComponent implements OnInit  {
     this.dataSource = new MatTableDataSource<Element>(this.transactions);
     
   }
+  edit(e){
+    e.stopPropagation()
+    this.editable = !this.editable
+  }
   savedata(){
     this.dateSubmitted = true;
     if(this.submitForm.invalid || this.transactions.length == 0){
@@ -72,12 +79,21 @@ export class AboutComponent implements OnInit  {
       const newMeal = {
         Date : this.submitForm.get("Date").value,
         totalCalorie : this.totalCalorie,
-        Meals : this.transactions
+        DailyMeals : this.transactions
       }
-      if(this.currentUser.Meals == undefined){
+      console.log(this.mealIndex)
+      console.log(newMeal)
+      if(this.currentUser.Meals == undefined || this.currentUser.Meals.length == 0){
         this.currentUser.Meals = []
+        this.currentUser.Meals.push(newMeal)
       }
-      this.currentUser.Meals.push(newMeal),
+      else if(this.currentUser.Meals.length > 0 && this.mealIndex != undefined){
+        this.currentUser.Meals[this.mealIndex] = newMeal;
+      }
+      else{
+        this.currentUser.Meals.push(newMeal)
+      }
+  
       
       this.dataService.updateMeals({
         Username : this.currentUser.Username,
@@ -119,6 +135,19 @@ export class AboutComponent implements OnInit  {
     //this.registrationsuccess = true;
   }
   getTransactionData(){
-    
+    if(this.currentUser == undefined){
+        this.dataService.getLoggedInName.next(undefined)
+        sessionStorage.clear()
+        this.router.navigate(["register"])
+      
+    }
+
+    else if(this.mealIndex != undefined){
+      
+      this.transactions = this.currentUser.Meals[this.mealIndex].DailyMeals
+      this.dataSource = new MatTableDataSource<Element>(this.transactions);
+      this.fromDate = this.currentUser.Meals[this.mealIndex].Date
+      
+    }
   }
 }
