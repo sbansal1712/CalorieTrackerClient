@@ -73,7 +73,7 @@
   <!-- calorie Column -->
   <ng-container matColumnDef="calorie">
     <th mat-header-cell *matHeaderCellDef> calorie </th>
-    <td mat-cell *matCellDef="let transaction"> <input type="number" matInput [(ngModel)]="transaction.calorie"/>  </td>
+    <td mat-cell *matCellDef="let transaction"> <input [disabled]="!editable" type="number" matInput [(ngModel)]="transaction.calorie"/>  </td>
     <td mat-footer-cell *matFooterCellDef> {{getTotalcalorie()}} </td>
   </ng-container>
 
