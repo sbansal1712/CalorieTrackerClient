@@ -1,0 +1,23 @@
+<h1>Your Personal Calorie Tracker</h1>
+
+<!-- <ul style="width: 100%;" *ngIf="ads">
+  <li *ngFor="let ad of ads">
+    <img src="assets/media.png" />
+    <p>{{ ad.title }}</p>
+    <span style="width: 100%;">{{ ad.description }}</span>
+  </li>
+</ul> -->
+
+<div >
+  <mat-card *ngFor="let item of Meals" class="ad-card">
+    <mat-card-header>
+      <mat-card-title>{{ item.totalCalorie }}</mat-card-title>
+    </mat-card-header>
+    <img height="250px" width="100%" src="assets/ad.gif" />
+    <mat-card-content>
+      <!-- <p>
+        {{ ad.Description }}
+      </p> -->
+    </mat-card-content>
+  </mat-card>
+</div>
